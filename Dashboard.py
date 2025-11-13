@@ -16,7 +16,7 @@ from Sobre import Sobre
 class Dashboards(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.processos_lista, self.licencas = self.carregar_configuracao()  # Carrega as listas de processos e licenças
+        self.processos_lista, self.licencas = self.carregar_configuracao() 
         if self.processos_lista is None or self.licencas is None:
             QMessageBox.critical(self, "Erro", "Erro ao carregar processos e licenças.")
             return
@@ -26,7 +26,7 @@ class Dashboards(QMainWindow):
 
     def init_ui(self):
         self.setWindowTitle("Dashboard")
-        self.setGeometry(0, 0, 1900, 1050)  # Ajuste o tamanho da janela
+        self.setGeometry(0, 0, 1900, 1050) 
 
         # Defina o ícone da janela
         icon_path = os.path.join(os.path.dirname(__file__), 'icone.ico')
@@ -76,8 +76,8 @@ class Dashboards(QMainWindow):
 
         # Usando QStackedWidget para sobreposição correta
         self.stacked_widget = QStackedWidget()
-        self.stacked_widget.addWidget(self.widget_interface)  # Adiciona o widget primeiro (fica por baixo)
-        self.stacked_widget.addWidget(self.btn_carregar)  # Adiciona o botão depois (fica por cima)
+        self.stacked_widget.addWidget(self.widget_interface)  
+        self.stacked_widget.addWidget(self.btn_carregar)  
 
         # Alinhamento do botão ao canto superior esquerdo
         self.stacked_widget.setCurrentIndex(1)
@@ -155,11 +155,9 @@ class Dashboards(QMainWindow):
                     if widget:
                         widget.deleteLater()  # Marca o widget para ser excluído
 
-            # Remove a widget_interface do layout do container principal, se necessário
             if self.container:
                 self.container.layout().removeWidget(self.widget_interface)
 
-            # Remove a widget_interface completamente
             self.widget_interface.deleteLater()
 
         # Recria o layout principal e o widget_interface
@@ -185,26 +183,26 @@ class Dashboards(QMainWindow):
 
         # Adiciona os gráficos (canvas)
         self.canvas1.setParent(self.widget_interface)
-        self.canvas1.setFixedSize(1700, 550)  # Define o tamanho do gráfico
-        self.canvas1.move(0, 0)  # Posiciona o gráfico manualmente (x, y)
+        self.canvas1.setFixedSize(1700, 550) 
+        self.canvas1.move(0, 0)  
 
         self.canvas2.setParent(self.widget_interface)
-        self.canvas2.setFixedSize(1700, 500)  # Define o tamanho do gráfico
-        self.canvas2.move(0, 500)  # Posiciona o gráfico manualmente (x, y)
-
+        self.canvas2.setFixedSize(1700, 500)  
+        self.canvas2.move(0, 500)  
+        
         # Botão para abrir sobre
         self.btn_abrir_sobre = QPushButton("Sobre", self.widget_interface)
         self.btn_abrir_sobre.setStyleSheet("background-color: #3e3e3e; color: #ffffff;")
         self.btn_abrir_sobre.setFixedSize(120, 35)
         self.btn_abrir_sobre.clicked.connect(self.abrir_sobre)
-        self.btn_abrir_sobre.move(1780, 0)  # Posiciona o widget manualmente (x, y)
+        self.btn_abrir_sobre.move(1780, 0) 
 
         # Botão para abrir a legenda
         self.btn_abrir_legenda = QPushButton("Legenda", self.widget_interface)
         self.btn_abrir_legenda.setStyleSheet("background-color: #3e3e3e; color: #ffffff;")
         self.btn_abrir_legenda.setFixedSize(120, 35)
         self.btn_abrir_legenda.clicked.connect(self.abrir_legenda)
-        self.btn_abrir_legenda.move(1650, 0)  # Posiciona o widget manualmente (x, y)
+        self.btn_abrir_legenda.move(1650, 0) 
 
         # Adiciona o combobox de seleção de processo
         self.combobox_processo = QComboBox(self.widget_interface)
@@ -213,14 +211,14 @@ class Dashboards(QMainWindow):
         self.combobox_processo.currentIndexChanged.connect(self.on_processo_selecionado)
         self.combobox_processo.setStyleSheet(combobox_style)
         self.combobox_processo.setFixedSize(200, 30)
-        self.combobox_processo.move(1700, 55)  # Posiciona o widget manualmente (x, y)
+        self.combobox_processo.move(1700, 55) 
 
         # Cria um QTextEdit para mostrar informações dos usuários
         self.text_edit_usuarios = QTextEdit(self.widget_interface)
         self.text_edit_usuarios.setReadOnly(True)
         self.text_edit_usuarios.setStyleSheet("border: 2px solid white; color: black;")
         self.text_edit_usuarios.setFixedSize(200, 850)
-        self.text_edit_usuarios.move(1700, 90)  # Posiciona o widget manualmente (x, y)
+        self.text_edit_usuarios.move(1700, 90)  
 
         # Adiciona o combobox de seleção de usuário
         self.combobox_usuario = QComboBox(self.widget_interface)
@@ -228,7 +226,7 @@ class Dashboards(QMainWindow):
         self.combobox_usuario.currentIndexChanged.connect(self.on_usuario_selecionado)
         self.combobox_usuario.setStyleSheet(combobox_style)
         self.combobox_usuario.setFixedSize(200, 30)
-        self.combobox_usuario.move(220, 4)  # Posiciona o widget manualmente (x, y)
+        self.combobox_usuario.move(220, 4)  
 
         # Atualiza os gráficos e o conteúdo inicial
         self.atualizar_graficos("Todos Usuários ou")
@@ -295,8 +293,8 @@ class Dashboards(QMainWindow):
         bars1 = self.ax1.bar(processos, tempos.dt.total_seconds(), color=cores)
         self.ax1.set_title('Duração do Uso dos Processos')
         self.ax1.set_ylabel('Tempo (HH:MM:SS)')
-        self.ax1.set_xticks(range(len(processos)))  # Define os ticks
-        self.ax1.set_xticklabels(processos, rotation=25, ha='right')  # Define os rótulos
+        self.ax1.set_xticks(range(len(processos)))  
+        self.ax1.set_xticklabels(processos, rotation=25, ha='right')  
         self.ax1.yaxis.set_major_formatter(plt.FuncFormatter(self.format_time))
 
         # Utiliza a função format_time para formatar os rótulos das barras
@@ -312,8 +310,8 @@ class Dashboards(QMainWindow):
         self.ax2.bar(processos, frequencias, color=cores)
         self.ax2.set_title('Acessos Diários por Diferentes Usuários')
         self.ax2.set_ylabel('Número de Acessos')
-        self.ax2.set_xticks(range(len(processos)))  # Define os ticks
-        self.ax2.set_xticklabels(processos, rotation=25, ha='right')  # Define os rótulos
+        self.ax2.set_xticks(range(len(processos)))  
+        self.ax2.set_xticklabels(processos, rotation=25, ha='right') 
         maior_licenca = max(self.licencas)
         max_frequencia = frequencias.max()
         if max_frequencia > maior_licenca:
@@ -392,3 +390,4 @@ if __name__ == "__main__":
     window = Dashboards()
     window.show()
     sys.exit(app.exec())
+
