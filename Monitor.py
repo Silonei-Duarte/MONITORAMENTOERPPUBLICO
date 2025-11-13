@@ -44,14 +44,11 @@ class AplicativoMonitoramento(QMainWindow):
         self.setGeometry(600, 50, 670, 950)
         self.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), 'icone.ico')))
 
-        # Define o caminho para o arquivo db.ini
         self.caminho_arquivo_ini = os.path.join(os.path.dirname(__file__), 'db.ini')
 
-        # Obter apims de criptografia e inicializar Fernet
         self.key = self.obter_apims_criptografia()
         self.fernet = Fernet(self.key)
 
-        # Carregar a configuração, incluindo processos_lista e licencas
         self.usuarios_permitidos, self.horarios_desconexoes, self.minutos, self.horaemail, self.email, self.destino, self.legenda = self.carregar_configuracao()
 
         # Botões
@@ -86,20 +83,17 @@ class AplicativoMonitoramento(QMainWindow):
         self.btn_abrir_configuracao.setStyleSheet("background-color: #3e3e3e; color: #ffffff;")
         self.btn_abrir_configuracao.clicked.connect(self.abrir_configuracao)
 
-        # Caixa para exibir a contagem de processos
         self.label_contagem_processos = QLabel(self)
         self.label_contagem_processos.setGeometry(530, 270, 120, 450)
         self.label_contagem_processos.setWordWrap(True)
         self.label_contagem_processos.setStyleSheet("color: #ffffff;")
 
-        # Configura a paleta de cores do aplicativo para o tema escuro
         palette = QPalette()
         palette.setColor(QPalette.ColorRole.Window, QColor("#2e2e2e"))
         palette.setColor(QPalette.ColorRole.Button, QColor("#3e3e3e"))
         palette.setColor(QPalette.ColorRole.ButtonText, QColor("#ffffff"))
         self.setPalette(palette)
 
-        # Configuração da caixa de Conexoes
         self.tree = QTreeView(self)
         self.tree.setGeometry(20, 20, 500, 900)
         self.tree.setHeaderHidden(False)
@@ -112,10 +106,8 @@ class AplicativoMonitoramento(QMainWindow):
         self.tree.setSelectionBehavior(QTreeView.SelectionBehavior.SelectRows)
         self.tree.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
 
-        # Ajuste do cabeçalho e largura das colunas
         self.aplicar_estilo_colconex()
 
-        # Define o estilo para o QTreeView
         self.tree.setStyleSheet(
             "QTreeView { background-color: #2e2e2e; color: #ffffff; } "
             "QTreeView::item:selected { background-color: #FF4500; color: #ffffff; } "
@@ -140,7 +132,6 @@ class AplicativoMonitoramento(QMainWindow):
         header.resizeSection(1, 130)  # Largura da coluna "Usuário"
         header.resizeSection(2, 250)  # Largura da coluna "Processos"
 
-        # Centraliza o texto nas células do TreeView
         for row in range(self.model.rowCount()):
             for column in range(self.model.columnCount()):
                 item = self.model.item(row, column)
@@ -526,7 +517,7 @@ class AplicativoMonitoramento(QMainWindow):
         try:
             shutil.copy(caminho_origem, caminho_destino)
         except Exception:
-            pass  # Ignora qualquer erro
+            pass  
 
         # Chama a função para limpar os diretórios
         self.manter_ultimas_planilhas(os.getcwd())
@@ -546,9 +537,10 @@ class AplicativoMonitoramento(QMainWindow):
             try:
                 os.remove(arquivo)
             except Exception:
-                pass  # Ignora erros ao excluir arquivos
+                pass  
+                
     def atualizar_dados_periodicamente(self, intervalo):
-        proximo_inicio = time.perf_counter()  # Define o tempo para o próximo loop
+        proximo_inicio = time.perf_counter()  
         while True:
             inicio_loop = time.perf_counter()
 
@@ -582,7 +574,7 @@ class AplicativoMonitoramento(QMainWindow):
                 time.sleep(tempo_restante)
             else:
                 # Caso o loop tenha demorado mais que o intervalo, ajusta o próximo ciclo
-                proximo_inicio = time.perf_counter()  # Reajusta o próximo início
+                proximo_inicio = time.perf_counter()  
 
     def exibir_conexoes(self):
         connection = self.conectar_bd()
@@ -645,7 +637,7 @@ class AplicativoMonitoramento(QMainWindow):
         contagem_usuarios = None
         contagem_seg_tela = None
 
-        conexao = self.conectar_bd()  # Estabelece a conexão com o banco de dados
+        conexao = self.conectar_bd()  
 
         if conexao:
             try:
@@ -694,7 +686,7 @@ class AplicativoMonitoramento(QMainWindow):
             cursor.execute("DELETE FROM R911MOD WHERE numsec = :numsec", {'numsec': numsec})
             connection.commit()
             QMessageBox.information(self, "Sucesso", f"Conexão {numsec} derrubada com sucesso.")
-            self.exibir_conexoes()  # Atualiza a lista de conexões
+            self.exibir_conexoes()  
         finally:
             cursor.close()
             connection.close()
@@ -752,7 +744,6 @@ class AplicativoMonitoramento(QMainWindow):
         # Nome do título igual ao assunto
         titulo_email = f"Usuários Conectados às {datetime.now().strftime('%H:%M')} no Senior."
 
-        # Formatação HTML com a tabela principal ajustada para ocupar apenas o espaço necessário
         # Formatação HTML com a tabela principal ajustada para ocupar apenas o espaço necessário
         resultados_html = f"""
         <html>
@@ -854,3 +845,4 @@ if __name__ == "__main__":
     janela = AplicativoMonitoramento()
     janela.show()
     sys.exit(app.exec())
+
